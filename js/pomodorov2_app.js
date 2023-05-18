@@ -1,77 +1,71 @@
-let timerInterval;
-let timeLeft;
-let isPaused = false;
-let pauseTime;
+let workTittle = document.getElementById('work');
+let breakTittle = document.getElementById('break');
 
-function startTimer() {
-  // Disable the Start button
-  document.getElementById("startBtn").disabled = true;
+let workTime = 25;
+let breakTime = 5;
 
-  // Set the initial time left to 25 minutes
-  timeLeft = 25 * 60;
+let seconds = "00"
 
-  timerInterval = setInterval(updateTimer, 1000);
+let bell = new Audio("bell.mp3");
+
+// display
+window.onload = () => {
+    document.getElementById('minutes').innerHTML = workTime;
+    document.getElementById('seconds').innerHTML = seconds;
+
+    workTittle.classList.add('active');
 }
 
-function stopTimer() {
-  clearInterval(timerInterval);
-  // Re-enable the Start button
-  document.getElementById("startBtn").disabled = false;
-}
+// start timer
+function start() {
+    // change button
+    document.getElementById('start').style.display = "none";
+    document.getElementById('reset').style.display = "block";
 
-function resetTimer() {
-  clearInterval(timerInterval);
-  // Reset the time left to 25 minutes
-  timeLeft = 25 * 60;
-  isPaused = false;
-  updateTimerDisplay();
-  // Re-enable the Start button
-  document.getElementById("startBtn").disabled = false;
-}
+    // change the time
+    seconds = 59;
 
-function pauseTimer() {
-  if (!isPaused) {
-    isPaused = true;
-    pauseTime = new Date();
-    clearInterval(timerInterval);
-  }
-}
+    let workMinutes = workTime - 1;
+    let breakMinutes = breakTime - 1;
 
-function resumeTimer() {
-  if (isPaused) {
-    isPaused = false;
-    const now = new Date();
-    const timeElapsed = now.getTime() - pauseTime.getTime();
-    timeLeft -= Math.floor(timeElapsed / 1000);
-    timerInterval = setInterval(updateTimer, 1000);
-  }
-}
+    breakCount = 0;
 
-function updateTimer() {
-  if (!isPaused) {
-    timeLeft--;
-    if (timeLeft < 0) {
-      if (timeLeft === -1) {
-        alert("Time's up!");
-      }
-      if (timeLeft === -30) {
-        // Set the time left to 5 minutes
-        timeLeft = 5 * 60;
-        alert("Take a 5-minute break!");
-      }
-      if (timeLeft === -35) {
-        // Set the time left to 25 minutes
-        timeLeft = 25 * 60;
-        alert("Break's over! Let's get back to work.");
-      }
+    // countdown
+    let timerFunction = () => {
+        //change the display
+        document.getElementById('minutes').innerHTML = workMinutes;
+        document.getElementById('seconds').innerHTML = seconds;
+
+        // start
+        seconds = seconds - 1;
+
+        if(seconds === 0) {
+            workMinutes = workMinutes - 1;
+            if(workMinutes === -1 ){
+                if(breakCount % 2 === 0) {
+                    // start break
+                    workMinutes = breakMinutes;
+                    breakCount++
+
+                    // change the panel
+                    bell.play();
+                    workTittle.classList.remove('active');
+                    breakTittle.classList.add('active');
+                }else {
+                    // continue work
+                    workMinutes = workTime;
+                    breakCount++
+
+                    // change the panel
+                    bell.play();
+                    breakTittle.classList.remove('active');
+                    workTittle.classList.add('active');
+                }
+            }
+            seconds = 59;
+        }
     }
-    updateTimerDisplay();
-  }
-}
 
-function updateTimerDisplay() {
-  const minutes = Math.floor(timeLeft / 60);
-  const seconds = timeLeft % 60;
-  const time = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-  document.getElementById("timer").innerHTML = time;
+    // start countdown
+    setInterval(timerFunction, 1000); // 1000 = 1s
 }

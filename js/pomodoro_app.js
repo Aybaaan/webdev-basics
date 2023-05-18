@@ -36,7 +36,7 @@ function timer () {
             currState += 1;
             start();
         }
-    } else if (currState != 0){
+    } else if (currState === 1){
         if(secs == 4){
             stop();
             seconds = 0;
