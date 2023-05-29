@@ -7,6 +7,9 @@ const reset_btn = document.getElementById("reset");
 let seconds = 0;
 let interval = null;
 
+let workTime = 6;
+let breakTime = 8;
+
 // Event listeners
 start_btn.addEventListener('click', start);
 stop_btn.addEventListener("click", stop);
@@ -26,48 +29,77 @@ function timer () {
 
 	time_el.innerText = `${mins}:${secs}`;
 
-    let currState = 0;
+    workT = workTime;
+    breakT = breakTime
 
-    if(currState === 0){    
-        if(secs == 6){
-            stop();
-            seconds = 0;
-            time_el.innerText = '00:00';
-            currState += 1;
-            start();
-        }
-    } else if (currState === 1){
-        if(secs == 4){
-            stop();
-            seconds = 0;
-            time_el.innerText = '00:00';
-            currState = 0;
-            start();
+    if(secs == workT){
+        stop();
+        seconds = 0;
+        time_el.innerText = '00:00';
+        secs = breakT
+        start();
+    } else if (secs == breakT) {
+        stop();
+        seconds = 0;
+        time_el.innerText = '00:00';
+        start();
+        secs = workTime;
+    }
+
+    //let currState;
+
+/*
+    for(let i = 0; i < 1; i++){
+        if (active = true){
+            maxTime = workTime;
+            if(secs = maxTime){
+                stop();
+                seconds = 0;
+                time_el.innerText = '00:00';
+                start();
+                active = false;
+                breakTime = true;
+            }
+        } else if(breakTime = true) {
+            maxTime = (secs == 4);
+            if(secs = maxTime){
+                stop();
+                seconds = 0;
+                time_el.innerText = '00:00';
+                start();
+                active = true;
+                breakTime = false;
+            }
         }
     }
-    return(seconds);
+/*
+    if(currState != 0){    
+        if(secs == 6){
+            currState = 0;
+            stop();
+            seconds = 0;
+            time_el.innerText = '00:00';
+            start();
+            if(secs == 4){
+                stop();
+                seconds = 0;
+                time_el.innerText = '00:00';
+                start();
+            }
+        }
+    }   */
 }
 
 function start () {
 	if (interval) {
 		return
 	}
-
 	interval = setInterval(timer, 1000);
 }
 
 function stop () {
 	clearInterval(interval);
 	interval = null;
-}
-
-function reset_pomodoro() {
-    var secs = timer();
-    if(secs == 5){
-        stop();
-        seconds = 0;
-        time_el.innerText = '00:00';
-    }
 }
 
 function reset () {
