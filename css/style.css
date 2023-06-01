@@ -1,0 +1,59 @@
+@import url('https://fonts.googleapis.com/css2?family=Happy+Monkey&display=swap');
+
+body{
+    background-color: wheat;
+    background: url(bbburst.svg);
+    background-position: center;
+    background-size: cover;
+    background-attachment: fixed;
+    font-family: 'Happy Monkey', cursive;
+    font-size: 20px;
+    margin: 20px;
+    justify-content: center;
+}
+
+.container{
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    position: center;
+    height: 100px;
+    align-items: center;
+    font-size: 23px;
+    font-family: 'Happy Monkey', cursive;
+}
+
+.slider-container{
+    width: 700px;
+    height: 470px;
+    position: absolute;
+    overflow: hidden;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.image-container{
+    display: flex;
+    transition: transform 0.4s ease-in-out;
+}
+
+.btn{
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    color: white;
+    font-size: 24px;
+    opacity: 50%;
+}
+
+.btn.prev{
+    left: 10px;
+}
+
+.btn.next{
+    right: 10px;
+}
+
+.btn:hover {
+    opacity: 1;
+}
